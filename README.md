@@ -1,64 +1,72 @@
-# ⛈️ Gerador-de-Alertas-Meteorologicos-Defesa-Civil
-Ferramenta de geração automática de alertas meteorológicos georreferenciados para a Defesa Civil de Nova Iguaçu, com mapas interativos e exportação de imagem.
+# ⛈️ Gerador de Alertas Meteorológicos - Defesa Civil (Painel de Inteligência)
+Ferramenta de geração automática de alertas meteorológicos georreferenciados e estimativa de impactos demográficos para a Defesa Civil de Nova Iguaçu.
 
 ![Status do Projeto](https://img.shields.io/badge/Status-Em_Produção-brightgreen)
-![Tech Stack](https://img.shields.io/badge/Tech-JavaScript_|_Leaflet_|_HTML2Canvas-blue)
+![Tech Stack](https://img.shields.io/badge/Tech-JS_|_Leaflet_|_Turf.js_|_HTML2Canvas-blue)
+![Deploy](https://img.shields.io/badge/Deploy-Firebase_Hosting-FFCA28?logo=firebase&logoColor=black)
 
 > **Nota:** Este é um repositório de portfólio. O código-fonte é propriedade privada e/ou de uso restrito governamental, portanto, apenas a documentação técnica e demonstração de funcionalidades estão disponíveis aqui.
 
 ## 🎯 Sobre o Projeto
 
-Desenvolvido para a **Defesa Civil de Nova Iguaçu**, este sistema é uma aplicação web *single-page* (SPA) projetada para agilizar a criação e padronização de comunicados de riscos meteorológicos.
+Desenvolvido para a **Defesa Civil de Nova Iguaçu**, este sistema é uma aplicação web *single-page* (SPA) projetada para agilizar a criação, padronização e análise de comunicados de riscos meteorológicos em tempo real.
 
-Antes desta ferramenta, a criação de alertas visuais dependia de editores de imagem manuais, o que consumia tempo crítico em situações de emergência. O sistema automatiza a formatação visual, garantindo que a identidade visual e as informações técnicas (meteorologista, data, nível de risco) sigam padrões rigorosos.
+Antes desta ferramenta, a criação de alertas dependia de edição manual de imagens, sem inteligência de dados. O sistema automatiza a formatação visual e cruza áreas de risco desenhadas no mapa com dados demográficos da cidade, garantindo precisão técnica em situações de emergência.
+
+## ✨ Novidades da Última Versão
+* **Inteligência Geoespacial (Estimativa de Impacto):** Agora o sistema calcula em tempo real a população, escolas municipais e unidades de saúde afetadas dentro do polígono de risco desenhado pelo operador.
+* **Barra de Ferramentas Compacta:** Nova UI para controle de mapa, incluindo ajuste fino de zoom decimal e alternância rápida de ferramentas de desenho.
+* **Deploy Otimizado:** Configuração de headers de cache no Firebase para garantir atualizações instantâneas da interface em ambiente de produção (Cache Busting).
 
 ## 📸 Demonstração
 
-![Interface Principal](screenshots/inicio.png)
-*Interface de configuração mostrando o painel de controle.*
+![Interface Principal](screenshots/inicio_1.1.png)
+*Interface de configuração mostrando o painel de controle e cruzamento de dados demográficos.*
 
-![Interface Mapa](screenshots/mapa.gif)
-*Interface de configuração mostrando o mapa interativo.*
+![Interface Mapa](screenshots/mapa_1.1.gif)
+*Interface de configuração mostrando o mapa interativo e desenho de polígonos.*
 
-![Interface Legenda](screenshots/legenda.png)
-*Interface mostrando a legenda do alerta em tempo real.*
+![Interface Legenda](screenshots/legenda_1.1.png) *Interface mostrando a legenda do alerta em tempo real.*
 
 ### Resultado Final (Exportação)
-![Alerta Gerado](screenshots/alerta_chuva.png)
-*Exemplo de imagem gerada automaticamente pelo sistema pronta para divulgação.*
+![Alerta Gerado](screenshots/alerta_chuva_1.1.png)
+*Exemplo de imagem gerada automaticamente pelo sistema, pronta para disparo em redes sociais e WhatsApp.*
 
 ## 🚀 Funcionalidades Principais
 
-* **Mapeamento Interativo (GIS):**
-    * Utilização da biblioteca **Leaflet.js** para renderização de mapas.
-    * Ferramenta de desenho (**Leaflet Draw**) permitindo que o operador delimite a área de risco (polígono) diretamente sobre o mapa da cidade.
-    * **Sincronização de Mini-Mapa:** Um algoritmo personalizado sincroniza o desenho do mapa principal com um "mini-mapa" estático posicionado no layout final da imagem.
+* **Análise Geoespacial de Risco (Turf.js):**
+    * Cálculo de interseção de polígonos complexos cruzando a área de alerta com a base de dados em formato GeoJSON dos bairros da cidade.
+    * Atualização dinâmica da estimativa de impacto demográfico (População, Escolas, Hospitais).
+* **Mapeamento Interativo Avançado:**
+    * Utilização da biblioteca **Leaflet.js** para renderização de mapas com controle de zoom de precisão (frações decimais).
+    * **Sincronização de Mini-Mapa:** Um algoritmo personalizado sincroniza o desenho do mapa principal com um mini-mapa estático aninhado no layout final.
 * **Tematização Dinâmica:**
-    * O sistema altera todo o esquema de cores (CSS Variables) e ícones automaticamente com base no nível de risco selecionado (Vigilância, Observação, Atenção, Alerta, Alerta Máximo).
-* **Lógica de Recomendações:**
-    * Sistema inteligente que sugere recomendações de segurança (ícones e textos) baseados no tipo de evento (ex: "Vendaval" carrega ícones de perigo de queda de árvores; "Alagamento" carrega ícones de não atravessar áreas alagadas).
-* **Exportação Client-Side:**
-    * Utilização do **html2canvas** para renderizar o DOM em um arquivo de imagem (`.png`) de alta resolução, pronto para redes sociais (Instagram/WhatsApp).
+    * O sistema altera todo o esquema de cores (CSS Variables), elementos da interface e odômetro de risco automaticamente com base no estágio selecionado (Vigilância, Observação, Atenção, Alerta, Alerta Máximo).
+* **Automação de Recomendações:**
+    * Lógica condicional que sugere recomendações de segurança baseadas no tipo de evento e na intensidade dos ventos/chuva.
+* **Exportação Client-Side (Zero Backend):**
+    * Renderização do DOM inteiro em um arquivo de imagem (`.png`) de alta resolução via **html2canvas**, ocultando automaticamente controles de interface durante o "snapshot".
 
 ## 🛠️ Tecnologias e Desafios Técnicos
 
 ### Stack
-* **Front-end:** HTML5, CSS3 (Flexbox & CSS Variables), Vanilla JavaScript (ES6+).
-* **Mapas:** Leaflet.js, Leaflet Draw.
+* **Front-end:** HTML5, CSS3 (Variáveis Dinâmicas & Flexbox), Vanilla JavaScript (ES6+).
+* **Geoprocessamento (GIS):** Leaflet.js, Leaflet Draw, Turf.js.
 * **Processamento de Imagem:** html2canvas.
+* **Hospedagem:** Firebase Hosting.
 
 ### Destaques da Implementação (Engenharia)
-Embora o código seja fechado, destaco os seguintes desafios resolvidos:
+Destaco os seguintes desafios arquiteturais resolvidos neste projeto:
 
-1.  **Manipulação do DOM para Canvas:** O maior desafio foi garantir que o mapa do Leaflet (que é dinâmico) fosse renderizado corretamente estaticamente pelo `html2canvas` sem "glitches" visuais ou perda de qualidade no zoom.
-2.  **Observer Pattern Simples:** Implementação de ouvintes de eventos para que a mudança em um *input* (ex: "Intensidade: Muito Forte") dispare atualizações em cascata: muda a cor do tema, marca checkboxes de riscos associados e atualiza a velocidade do vento estimada.
-3.  **Design Responsivo para Impressão:** O layout foi construído com dimensões fixas específicas para garantir a legibilidade tanto em telas de celular quanto em impressões físicas para relatórios.
+1.  **Cálculo de Interseção Espacial no Front-end:** Processar matrizes de coordenadas complexas e calcular a interseção (`turf.booleanIntersects`) entre o desenho do usuário e o GeoJSON da cidade de forma instantânea, sem travar a thread principal do navegador.
+2.  **Manipulação de Canvas Assíncrona:** Garantir que elementos dinâmicos do Leaflet fossem preservados pelo `html2canvas` sem artefatos visuais. Foi criada uma lógica de temporização (`setTimeout`) e injeção/remoção de estilos via DOM para ocultar controles nativos antes do *print* da tela.
+3.  **Controle Estrito de Cache em SPA:** Configuração avançada do `firebase.json` (`Cache-Control: no-cache, no-store, must-revalidate`) para evitar que CDNs entregassem versões com CSS/JS desatualizados durante o uso em crises meteorológicas críticas.
 
 ## 👤 Autor
 
 **Lucas Nunes**
-*Desenvolvedor Full Stack & Android*
+*Desenvolvedor Full Stack & Mobile*
 
-Entre em contato para discutir sobre a arquitetura deste projeto ou oportunidades de trabalho.
+Construindo soluções tecnológicas robustas e escaláveis para desafios reais. Entre em contato para discutir sobre a arquitetura deste projeto ou oportunidades.
 
 [![LinkedIn](https://img.shields.io/badge/LinkedIn-0077B5?style=for-the-badge&logo=linkedin&logoColor=white)](https://www.linkedin.com/in/lucas-nunes-936239204/)
